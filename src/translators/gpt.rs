@@ -20,12 +20,13 @@ pub async fn translates(
         content: prompt + original_text,
     };
 
-    Ok(
-        serde_json::from_str(gpt_api::call(vec![message]).await?.as_str())
-            .map_err(|e| -> Box<dyn std::error::Error + Send> {
-                Box::new(e)
-            })?,
-    )
+    let gpt_response: String = gpt_api::call(vec![message]).await?;
+
+    Ok(serde_json::from_str(gpt_response.as_str()).map_err(
+        |e: serde_json::Error| -> Box<dyn std::error::Error + Send> {
+            Box::new(e)
+        },
+    )?)
 }
 
 #[cfg(test)]

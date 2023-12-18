@@ -9,4 +9,4 @@ Given english content, you identify potential typos, try to fix it, and then tra
   "translated": "{{{译文}}}",
 }
 
-Now translate using the above Json format ONLY: 
+Now translate following english content using the above Json format ONLY: 
