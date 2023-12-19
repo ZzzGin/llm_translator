@@ -1,20 +1,20 @@
 use crate::{
-    models::translator_output::TranslatorOutput, translators::gpt::translates,
+    models::translator_output::TranslatorOutput, prompts::eng_to_chn,
+    translators::gpt::translates,
 };
 use arboard::Clipboard;
 use std::{env, error::Error};
 use utils::command_line::PrintCommand;
 mod apis;
 mod models;
+mod prompts;
 mod translators;
 mod utils;
-
-const TEST_PROMPT_PATH: &str = "./prompts/eng_to_chn.txt";
 
 #[tokio::main]
 async fn main() {
     let original: String = env::args().nth(1).expect("Please provide content!");
-    match translates(&original, TEST_PROMPT_PATH).await {
+    match translates(&original, eng_to_chn::prompt).await {
         Ok(translator_output) => handle_success(translator_output),
         Err(error) => handle_error(error),
     }
@@ -51,7 +51,7 @@ fn handle_error(error: Box<dyn Error + Send>) {
 }
 
 fn copy_to_clipboard(text: &String) {
-    let mut clipboard = Clipboard::new().unwrap();
+    let mut clipboard: Clipboard = Clipboard::new().unwrap();
     match clipboard.set_text(text) {
         Ok(_) => PrintCommand::Success
             .print_message(&"Copied in clipboard.".to_string()),
