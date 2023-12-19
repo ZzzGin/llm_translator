@@ -17,8 +17,8 @@ impl PrintCommand {
 
         // Decide on the print color
         let statment_color: Color = match self {
-            Self::Success => Color::Green,
-            Self::Info => Color::Yellow,
+            Self::Success => Color::DarkGreen,
+            Self::Info => Color::DarkYellow,
             Self::Error => Color::Red,
         };
 
